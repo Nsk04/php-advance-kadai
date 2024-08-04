@@ -8,23 +8,23 @@ try {
     
      // orderパラメータの値が存在すれば（並び替えボタンを押したとき）、その値を変数$orderに代入する
     if (isset($_GET['order'])) {
-      $order = $_GET['order'];
-  } else {
-      $order = NULL;
-  }
+    $order = $_GET['order'];
+    } else {
+    $order = NULL;
+    }
 
   // keywordパラメータの値が存在すれば（書籍名を検索したとき）、その値を変数$keywordに代入する    
-  if (isset($_GET['keyword'])) {
+    if (isset($_GET['keyword'])) {
     $keyword = $_GET['keyword'];
-} else {
+    } else {
     $keyword = NULL;
-}
+    }
 
   // orderパラメータの値によってSQL文を変更する    
-  if ($order === 'desc') {
-      $sql_select = 'SELECT * FROM products ORDER BY updated_at DESC';$sql_select = 'SELECT * FROM products WHERE product_name LIKE :keyword ORDER BY updated_at DESC';
+    if ($order === 'desc') {
+      $sql_select = 'SELECT * FROM books ORDER BY updated_at DESC';$sql_select = 'SELECT * FROM books WHERE book_name LIKE :keyword ORDER BY updated_at DESC';
     }else {
-      $sql_select = 'SELECT * FROM products WHERE product_name LIKE :keyword ORDER BY updated_at ASC';
+      $sql_select = 'SELECT * FROM books WHERE book_name LIKE :keyword ORDER BY updated_at ASC';
     }
 
      // SQL文を用意する
@@ -69,7 +69,7 @@ try {
         </nav>
     </header>
     <main>
-        <article class="products">
+        <article class="books">
             <h1>書籍一覧</h1>
             <?php
              // （書籍の登録・編集・削除後）messageパラメータの値を受け取っていれば、それを表示する
@@ -77,7 +77,7 @@ try {
                 echo "<p class='success'>{$_GET['message']}</p>";
             }
             ?>
-            <div class="products-ui">
+            <div class="books-ui">
                 <div>
                 <a href="read.php?order=desc&keyword=<?= $keyword ?>">
                         <img src="images/desc.png" alt="降順に並び替え" class="sort-img">
@@ -87,12 +87,12 @@ try {
                     </a>
                     <form action="read.php" method="get" class="search-form">
                     <input type="hidden" name="order" value="<?= $order ?>">
-                        <input type="text" class="search-box" placeholder="商品名で検索" name="keyword" value="<?= $keyword ?>">
+                        <input type="text" class="search-box" placeholder="書籍名で検索" name="keyword" value="<?= $keyword ?>">
                     </form>
                 </div>
                 <a href="create.php" class="btn">商品登録</a>
             </div>
-            <table class="products-table">
+            <table class="books-table">
                 <tr>
                     <th>書籍コード</th>
                     <th>書籍名</th>
@@ -104,16 +104,16 @@ try {
                 </tr>
                 <?php
                  // 配列の中身を順番に取り出し、表形式で出力する
-                foreach ($products as $product) {
+                foreach ($books as $book) {
                     $table_row = "
                         <tr>
-                        <td>{$product['product_code']}</td>
-                        <td>{$product['product_name']}</td>
-                        <td>{$product['price']}</td>
-                        <td>{$product['stock_quantity']}</td>
-                        <td>{$product['vendor_code']}</td> 
-                        <td><a href='update.php?id={$product['id']}'><img src='images/edit.png' alt='編集' class='edit-icon'></a></td>
-                        <td><a href='delete.php?id={$product['id']}'><img src='images/delete.png' alt='削除' class='delete-icon'></a></td>                      
+                        <td>{$book['book_code']}</td>
+                        <td>{$book['book_name']}</td>
+                        <td>{$book['price']}</td>
+                        <td>{$book['stock_quantity']}</td>
+                        <td>{$book['genre_code']}</td> 
+                        <td><a href='update.php?id={$book['id']}'><img src='images/edit.png' alt='編集' class='edit-icon'></a></td>
+                        <td><a href='delete.php?id={$book['id']}'><img src='images/delete.png' alt='削除' class='delete-icon'></a></td>                      
                         </tr>                    
                     ";
                     echo $table_row;
